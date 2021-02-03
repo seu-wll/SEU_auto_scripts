@@ -1,7 +1,8 @@
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 import time
-import tkinter.messagebox
 import random
 import sys
 import string
@@ -9,18 +10,22 @@ import random
 import base64
 import csv
 
+chrome_options = Options()
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--headless')
+# par_dir = os.path.dirname(os.path.abspath(__file__))
+# os.chdir(par_dir)
 
-
-# base64 decode your password in case you use a bat to run the script
-# and are afraid of password being stored in plaintext
 def decode(s):
     return base64.b64decode(s).decode('ascii')
-
+localtime = time.asctime( time.localtime(time.time()))
+print(localtime)
 with open('login_information.csv') as f:    #read students information from csv
     reader = csv.reader(f)     
     for row in reader:
         if len(row)>1:  
-                browser = webdriver.Chrome(executable_path=r'./webdriver/chromedriver.exe')        
+                browser = webdriver.Chrome(chrome_options=chrome_options)        
                 browser.get('http://ehall.seu.edu.cn/qljfwapp2/sys/lwReportEpidemicSeu/index.do')
 
                 # browser.maximize_window()
@@ -71,6 +76,3 @@ with open('login_information.csv') as f:    #read students information from csv
                 time.sleep(5)
                 print("Successfully fill in!")
                 browser.quit()
-              
-
-            
